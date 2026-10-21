@@ -106,7 +106,7 @@ Browser  →  ShieldScope Frontend (HTML/CSS/JS)
 ||---|---|---|
 || Frontend (static) | ✅ Complete | Syntax-validated, serves via `http.server` or FastAPI |
 || FastAPI backend | ✅ Complete | 8 integration tests pass |
-|| API client wrapper | ✅ Complete | 30 unit tests pass (mocked HTTP) |
+|| API client wrapper | ✅ Complete | 35 unit tests pass (mocked HTTP) |
 || Fail-closed logic | ✅ Complete | Tests confirm BLOCKED w/o key |
 || Endpoint verification | ✅ Complete | Read official OpenAPI specs at docs.webacy.com |
 || URL endpoint path | ✅ Corrected | Changed from guessed `/urls/risk` to verified `POST /url` |
@@ -201,9 +201,21 @@ covered by the applicant's own time — no cash is requested beyond API credits.
 
 ## 9. Team
 
-ShieldScope is being developed by a solo developer (the applicant). The codebase
-is fully open-source and will remain so. Specific experience details and
-background will be provided in the grant application form.
+ShieldScope is being developed by an independent developer who learns through
+hands-on projects and AI-assisted development. The applicant's technical
+experience includes Python, FastAPI, AI-assisted development, and building
+Web3-related projects published on GitHub.
+
+The applicant has implemented the initial application, backend API integration
+layer, frontend interface, input validation, error handling, and automated
+tests. The application is designed to fail safely when risk data is
+unavailable (BLOCKED state) rather than presenting unverified results as safe.
+
+As an independent developer, AI-assisted tools are used to accelerate
+implementation, testing, and debugging while reviewing the resulting code and
+validating functionality. The goal is to continue improving technical skills
+while building useful, transparent, and accessible security tools for the
+Web3 ecosystem.
 
 All code is open-source and will remain so.
 
@@ -230,7 +242,7 @@ All code is open-source and will remain so.
 |---|---|---|
 | Repository (public, MIT) | ✅ Yes | `github.com/rann-xyz/ShieldScope` |
 | Code compiles / builds | ✅ Yes | `pip install -r requirements.txt` succeeds |
-| Tests pass | ✅ Yes | 38 passed, 2 skipped (live API tests) |
+|| Tests pass | ✅ Yes | 43 passed, 2 skipped (live API tests) |
 | Setup instructions | ✅ Yes | README + section 6 above |
 | Fail-closed documented | ✅ Yes | README "Security Model" + frontend BLOCKED display |
 | API endpoints verified | ✅ Yes | Read from official docs.webacy.com OpenAPI specs |
