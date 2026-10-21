@@ -89,13 +89,16 @@ Browser  →  ShieldScope Frontend (HTML/CSS/JS)
 
 ### Current Status (MVP Phase)
 
+> **Status: MVP Complete · Live integration pending API key approval · No API credits granted yet**
+
 | Component | Status | Verification |
-|---|---|---|
-| Frontend (static) | ✅ Complete | Syntax-validated |
-| FastAPI backend | ✅ Complete | 7 integration tests pass |
-| API client wrapper | ✅ Complete | 8 unit tests pass |
-| Fail-closed logic | ✅ Complete | Tests confirm BLOCKED w/o key |
-| Live API integration | ⚠️ BLOCKED | Requires granted API key |
+||---|---|---|
+|| Frontend (static) | ✅ Complete | Syntax-validated |
+|| FastAPI backend | ✅ Complete | 8 integration tests pass |
+|| API client wrapper | ✅ Complete | 30 unit tests pass (mocked HTTP) |
+|| Fail-closed logic | ✅ Complete | Tests confirm BLOCKED w/o key |
+|| Endpoint verification | ✅ Complete | Read official OpenAPI docs at docs.webacy.com |
+|| Live API integration | ⚠️ BLOCKED | Requires granted API key |
 
 ### Key Design Decisions
 

@@ -58,10 +58,13 @@ ShieldScope/
 Integrated three Webacy DD.xyz risk endpoints (base: `https://api.webacy.com`):
 
 | Scanner | Method | Path | Auth |
-|---------|--------|------|------|
-| **Wallet Risk** | GET | `/addresses/{address}` | Header `x-api-key` |
-| **Contract Risk** | GET | `/contracts/{contractAddress}` | Header `x-api-key` |
-| **URL Risk** | POST | URL from docs context | Header `x-api-key` |
+||---------|--------|------|------|
+|| **Wallet Risk** | GET | `/addresses/{address}` | Header `x-api-key` |
+|| **Contract Risk** | GET | `/contracts/{contractAddress}` | Header `x-api-key` |
+|| **URL Risk** | POST | `/url` | Header `x-api-key` |
+
+All endpoints verified against the official Webacy API documentation at
+`docs.webacy.com` (OpenAPI specs dated v1.12.1 / v1.2.0).
 
 ### Wallet Risk (`/addresses/{address}`)
 
