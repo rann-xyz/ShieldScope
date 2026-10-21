@@ -123,8 +123,9 @@ function bindForm(formId, endpoint) {
       const data = await resp.json();
       resultsContainer.innerHTML = renderReport(data);
     } catch (err) {
+      const errorText = err.message ? escapeHtml(err.message.toString()) : "Unknown error";
       resultsContainer.innerHTML =
-        '<p class="error">❌ Gagal memindai: ' + err.message + "</p>";
+        '<p class="error">❌ Gagal memindai: ' + errorText + "</p>";
     }
   });
 }

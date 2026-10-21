@@ -175,8 +175,9 @@ pytest tests/ -v -m "not require_api_key"
 ### Expected results (no API key set)
 
 ```
-tests/test_api_client.py  ........ (8 tests, all PASS)
-tests/test_server.py      ....... (7 tests, all PASS)
+tests/test_api_client.py   30 tests (all PASS)
+tests/test_server.py         8 tests (all PASS)
+TOTAL: 38 passed, 2 skipped — 0 failures
 ```
 
 ### Live integration tests
