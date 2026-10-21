@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShieldScope — Web3 Security Scanner (Demo)</title>
+  <meta name="description" content="ShieldScope: wallet, contract, and URL risk scanning via Webacy DD.xyz APIs. Demo prototype." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body class="theme-light">
+
+  <!-- Demo banner -->
+  <div class="demo-banner" role="note">
+    ⚠️ <strong>Demo Prototype</strong> — ShieldScope MVP. Results require valid API key. No fabricated data.
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a href="#" class="brand">🛡️ Shield<span class="brand-accent">Scope</span></a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+        <span class="nav-bar"></span><span class="nav-bar"></span><span class="nav-bar"></span>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#wallet" class="nav-link">Wallet Scanner</a></li>
+        <li><a href="#contract" class="nav-link">Contract Scanner</a></li>
+        <li><a href="#url" class="nav-link">URL Scanner</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <h1>ShieldScope</h1>
+        <p class="hero-sub">Web3 Security Scanner — wallet, smart contract, and phishing URL risk analysis powered by DD.xyz by Webacy APIs.</p>
+        <div class="hero-actions">
+          <a href="#wallet" class="btn btn-primary">Scan Wallet</a>
+          <a href="#about" class="btn btn-outline">How It Works</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-badge">MVP v1.0</div>
+        <p>No fabricated results. Requires Webacy API key for live scanning.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Status / API key indicator -->
+  <section class="section container">
+    <div class="status-banner" id="api-status">
+      <span id="status-text">Checking configuration...</span>
+    </div>
+  </section>
+
+  <!-- Wallet Scanner -->
+  <section class="section" id="wallet">
+    <div class="container">
+      <h2 class="section-title">Wallet Risk Scanner</h2>
+      <p class="section-desc">Enter any wallet or token address to analyze threat exposure, sanctions hits, and risk flags.</p>
+      <form class="scan-form" id="wallet-form">
+        <input type="text" name="address" class="input input-lg" placeholder="e.g. 0x..." autocomplete="off" required />
+        <select name="chain" class="input-select">
+          <option value="eth">Ethereum</option>
+          <option value="base">Base</option>
+          <option value="bsc">BSC</option>
+          <option value="polygon">Polygon</option>
+          <option value="arbitrum">Arbitrum</option>
+          <option value="optimism">Optimism</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Scan Wallet</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Contract Scanner -->
+  <section class="section section-alt" id="contract">
+    <div class="container">
+      <h2 class="section-title">Smart Contract Risk Scanner</h2>
+      <p class="section-desc">Analyze smart contracts for vulnerabilities, owner permissions, and risk exposures.</p>
+      <form class="scan-form" id="contract-form">
+        <input type="text" name="contract_address" class="input input-lg" placeholder="e.g. 0x..." autocomplete="off" required />
+        <select name="chain" class="input-select">
+          <option value="eth">Ethereum</option>
+          <option value="base">Base</option>
+          <option value="bsc">BSC</option>
+          <option value="polygon">Polygon</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Scan Contract</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- URL Scanner -->
+  <section class="section" id="url">
+    <div class="container">
+      <h2 class="section-title">Phishing URL Scanner</h2>
+      <p class="section-desc">Check if a URL or domain is flagged as phishing, malicious, or impersonated.</p>
+      <form class="scan-form" id="url-form">
+        <input type="url" name="url" class="input input-lg" placeholder="e.g. https://example.com" autocomplete="off" required />
+        <button type="submit" class="btn btn-primary">Scan URL</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Results container (filled by JS) -->
+  <section class="section" id="results-section" hidden>
+    <div class="container">
+      <h2 class="section-title">Risk Report</h2>
+      <div id="results-container"></div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section section-alt" id="about">
+    <div class="container">
+      <h2 class="section-title">About ShieldScope</h2>
+      <p class="section-desc">
+        ShieldScope is a prototype Web3 security scanner built for the DD.xyz by Webacy Startup Accelerator Grant.
+        It integrates Webacy's Risk Engine APIs to provide real-time due diligence on wallets, smart contracts,
+        and phishing URLs.
+      </p>
+      <ul class="features-list">
+        <li><strong>Multi-chain support:</strong> Ethereum, Base, BSC, Polygon, Arbitrum, Optimism, Solana, and more.</li>
+        <li><strong>Evidence-based reports:</strong> Each scan returns risk scores, issue details, and supporting evidence.</li>
+        <li><strong>Fail-closed design:</strong> Blocked state when API key is missing or requests fail — never fake passes.</li>
+      </ul>
+      <div class="api-status-note">
+        <strong>API key required for live scanning:</strong> Set the <code>WEBACITY_API_KEY</code> environment variable on the backend.
+        Without it, all scans return a BLOCKED status. No keys are stored in the frontend.
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">🛡️ Shield<span class="brand-accent">Scope</span></div>
+      <p><strong>Disclaimer:</strong> ShieldScope is a prototype demo for grant evaluation. It does not guarantee detection of all threats. Always perform your own due diligence before transacting on-chain.</p>
+      <p class="footer-copy">© <span id="year">2025</span> ShieldScope MVP — not for production financial advice.</p>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
