@@ -149,10 +149,10 @@ cp .env.example .env
 # 4. Run backend
 python -m uvicorn app.server:app --reload --port 8000
 
-# 5. Open in browser
-#    Frontend: http://localhost:8000/static/index.html  (if mounted)
-#    OR serve frontend directly:
-#    python -m http.server 8080 --directory frontend
+# 5. Open in browser:
+#    http://localhost:8000/            (serves the frontend HTML)
+#    http://localhost:8000/docs       (API documentation)
+#    http://localhost:8000/static/index.html  (alternate frontend path)
 ```
 
 ---

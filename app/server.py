@@ -112,5 +112,5 @@ def _report_to_response(report: RiskReport) -> ScanResponse:
 async def root():
     index = _FRONTEND_DIR / "index.html"
     if index.exists():
-        return JSONResponse({"status": "frontend mounted at /static"})
+        return FileResponse(index)
     return JSONResponse({"documentation": "/docs", "health": "/health"})
