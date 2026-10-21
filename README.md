@@ -23,6 +23,9 @@ smart contracts, and phishing URLs by integrating Webacy's Risk Engine APIs.
 - [Testing](#testing)
 - [Configuration](#configuration)
 - [API Endpoints](#api-endpoints)
+- [BLOCKED State](#blocked-state)
+- [Rate Limiting](#rate-limiting)
+- [Limitations & Known Gaps](#limitations--known-gaps)
 - [Grant Proposal](#grant-proposal)
 
 ---
@@ -175,9 +178,9 @@ pytest tests/ -v -m "not require_api_key"
 ### Expected results (no API key set)
 
 ```
-tests/test_api_client.py   30 tests (all PASS)
+tests/test_api_client.py   34 tests (all PASS)
 tests/test_server.py         8 tests (all PASS)
-TOTAL: 38 passed, 2 skipped — 0 failures
+TOTAL: 42 passed, 2 skipped — 0 failures
 ```
 
 ### Live integration tests
@@ -210,6 +213,42 @@ Webacy API.
 | `/api/scan/wallet` | POST | Scan a wallet address |
 | `/api/scan/contract` | POST | Scan a contract address |
 | `/api/scan/url` | POST | Scan a URL for phishing/malware |
+
+---
+
+## BLOCKED State
+
+ShieldScope is designed with a **fail-closed** security model. When the API key
+is not configured, when a request fails, or when the API returns an error
+(401, 403, 429, 500), all scans return:
+
+```json
+{
+  "target": "0xAddressOrUrl",
+  "category": "wallet",
+  "risk_level": "BLOCKED",
+  "risk_score": null,
+  "summary": "API key not configured. Set WEBACITY_API_KEY to enable live checks.",
+  "issues": [],
+  "evidence": ["API key not configured..."]
+}
+```
+
+**What BLOCKED means:**
+
+- The address/URL has **not** been verified by the Webacy API.
+- This is **not** the same as "safe" or "low risk."
+- It means the scan could not be completed — typically because no API key is
+  configured, the request timed out, or the API returned an error.
+- **ShieldScope never fabricates a low-risk or safe result.** If the API is
+  unavailable, the default is always BLOCKED — never green/low.
+
+**In the frontend UI:**
+- The results card displays a red **BLOCKED** badge
+- An explanatory note appears: *"API key not configured or request failed.
+  Set WEBACITY_API_KEY on the server for live results."*
+- If `apiConfigured` is `false`, the header banner says: *"API key not configured —
+  scans will return BLOCKED (no fake results)."*
 
 ---
 

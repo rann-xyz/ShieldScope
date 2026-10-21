@@ -147,6 +147,8 @@ class APIClient:
         try:
             client = await self._get_client()
             resp = await client.get(path, headers=self._headers(), params=params)
+            if resp.status_code != 200:
+                resp.raise_for_status()
             data = resp.json()
         except httpx.TimeoutException:
             return self._blocked_report(address, "wallet", "Request timed out.")
@@ -238,7 +240,11 @@ class APIClient:
         )
 
     async def scan_url(self, url_to_check: str) -> RiskReport:
-        """Scan a URL via POST /url body: {"url": "..."}."""
+        """Scan a URL via POST /url.
+
+        Validates that the input is a well-formed URL before sending. If the
+        input is malformed, returns a BLOCKED report — fail-closed.
+        """
         if not self.api_key:
             return self._blocked_report(
                 url_to_check, "url",
@@ -246,6 +252,16 @@ class APIClient:
             )
         if not _rate_ok("url"):
             return self._blocked_report(url_to_check, "url", "Rate limit exceeded.")
+
+        # Input validation — reject empty or malformed URLs early
+        if not url_to_check or not url_to_check.strip():
+            return self._blocked_report("", "url", "Empty URL provided.")
+        from urllib.parse import urlparse
+        parsed = urlparse(url_to_check.strip())
+        # If a scheme is present but netloc is missing, it's malformed
+        if parsed.scheme and not parsed.netloc:
+            return self._blocked_report(url_to_check, "url",
+                                        f"Malformed URL: {url_to_check}")
 
         try:
             client = await self._get_client()

@@ -280,9 +280,19 @@ class TestErrorHandling:
     def test_malformed_json(self):
         def handler(req):
             return httpx.Response(200, content="not json at all", request=req)
+
         client = make_client(transport=httpx.MockTransport(handler))
         report = asyncio.run(client.scan_wallet("0xaddr", chain="eth"))
         assert report.risk_level == "BLOCKED"
+
+    def test_wallet_non_200_status(self):
+        """Wallet endpoint should raise_for_status on non-200 responses."""
+        def handler(req):
+            return httpx.Response(500, json={"error": "internal"}, request=req)
+        client = make_client(transport=httpx.MockTransport(handler))
+        report = asyncio.run(client.scan_wallet("0xaddr", chain="eth"))
+        assert report.risk_level == "BLOCKED"
+        assert "500" in report.summary
 
 
 # ===== Test: Rate limiting (in-memory) =====
@@ -344,6 +354,40 @@ class TestConfig:
     def test_headers_empty_without_key(self):
         c = APIClient(api_key=None)
         assert c._headers() == {}
+
+
+# ===== Test: Input validation =====
+
+class TestInputValidation:
+    def test_url_empty_string_blocked(self):
+        client = make_client(transport=httpx.MockTransport(_ok_handler({"riskLevel": "low"})))
+        report = asyncio.run(client.scan_url(""))
+        assert report.risk_level == "BLOCKED"
+        assert "Empty" in report.summary
+
+    def test_url_whitespace_blocked(self):
+        client = make_client(transport=httpx.MockTransport(_ok_handler({"riskLevel": "low"})))
+        report = asyncio.run(client.scan_url("   "))
+        assert report.risk_level == "BLOCKED"
+        assert "Empty" in report.summary
+
+    def test_url_malformed_blocked(self):
+        """A URL with scheme but no host is malformed."""
+        client = make_client(transport=httpx.MockTransport(_ok_handler({"riskLevel": "low"})))
+        report = asyncio.run(client.scan_url("https://"))
+        assert report.risk_level == "BLOCKED"
+        assert "alformed" in report.summary.lower()
+
+    def test_url_bare_hostname_accepted(self):
+        """Bare hostnames (no scheme) are valid per Webacy docs."""
+        captured = {}
+        def handler(req):
+            captured["body"] = json.loads(req.content)
+            return httpx.Response(200, json={"riskLevel": "low"}, request=req)
+        client = make_client(transport=httpx.MockTransport(handler))
+        report = asyncio.run(client.scan_url("uniswap.org"))
+        assert report.risk_level == "LOW"
+        assert captured["body"]["url"] == "uniswap.org"
 
 
 # ===== Integration tests (require real API key; skip if unavailable) =====
